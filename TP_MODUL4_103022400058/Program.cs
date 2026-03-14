@@ -28,16 +28,66 @@ class KodePos
     }
 }
 
+class DoorMachine
+{
+    public enum State { Terkunci, Terbuka }
+    public enum Trigger { KunciPintu, BukaPintu }
+
+    private State currentState;
+
+    public DoorMachine()
+    {
+        currentState = State.Terkunci;
+        Console.WriteLine("Pintu terkunci");
+    }
+
+    public void UbahState(Trigger trigger)
+    {
+        switch (currentState)
+        {
+            case State.Terkunci:
+                if (trigger == Trigger.BukaPintu)
+                {
+                    currentState = State.Terbuka;
+                    Console.WriteLine("Pintu tidak terkunci");
+                }
+                else if (trigger == Trigger.KunciPintu)
+                {
+                    currentState = State.Terkunci;
+                    Console.WriteLine("Pintu terkunci");
+                }
+                break;
+
+            case State.Terbuka:
+                if (trigger == Trigger.KunciPintu)
+                {
+                    currentState = State.Terkunci;
+                    Console.WriteLine("Pintu terkunci");
+                }
+                else if (trigger == Trigger.BukaPintu)
+                {
+                    currentState = State.Terbuka;
+                    Console.WriteLine("Pintu tidak terkunci");
+                }
+                break;
+        }
+    }
+}
+
 class Program
 {
     static void Main()
     {
         KodePos pencariKode = new KodePos();
+        Console.WriteLine("Batununggal : " + pencariKode.getKodePos("Batununggal"));
+        Console.WriteLine("Margasari : " + pencariKode.getKodePos("Margasari"));
 
-        string kelurahan1 = "Batununggal";
-        Console.WriteLine(kelurahan1 + " : " + pencariKode.getKodePos(kelurahan1));
+        Console.WriteLine();
 
-        string kelurahan2 = "Margasari";
-        Console.WriteLine(kelurahan2 + " : " + pencariKode.getKodePos(kelurahan2));
+        DoorMachine pintu = new DoorMachine();
+        pintu.UbahState(DoorMachine.Trigger.BukaPintu);
+        pintu.UbahState(DoorMachine.Trigger.BukaPintu);
+        pintu.UbahState(DoorMachine.Trigger.KunciPintu);
+        pintu.UbahState(DoorMachine.Trigger.KunciPintu);
     }
 }
